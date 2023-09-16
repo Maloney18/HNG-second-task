@@ -1,8 +1,11 @@
+import NavBar from "../navbar/navbar"
 
 const MovieDetails = () => {
-  return (
-    <div>MovieDetails</div>
-  )
+    return (
+        <section className="movie-details">
+            <NavBar />
+        </section>
+    )
 }
 
 export default MovieDetails
