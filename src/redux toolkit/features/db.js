@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    allData: [],
+    popular: [],
     search: [],
-    favorite: []
+    favorites: JSON.parse(localStorage.getItem('favorites')) || [],
+    topRated: [],
+    genres: [],
+    upcoming: []
 }
 
 const db = createSlice({
@@ -12,23 +15,50 @@ const db = createSlice({
     reducers: {
 
         populateSearch: (state, action) => {
-            state.search.push(action.payload)
+            state.search = action.payload
         },
 
         back: (state, action) => {
             state.search = []
         },
 
-        populateGeneral: (state, action) => {
-            state.allData = action.payload
+        populatePopular: (state, action) => {
+            state.popular = action.payload
         },
 
-        populateFavorite: (state) => {
-            state.favorite.push(state.allData.map(movie => movie.favorite))
+        populateFavorite: (state, action) => {
+            console.log(action.payload)
+
+            if (state.favorites.length !== 0 && state.favorites.find( itm => itm.id === action.payload.id )) {
+                console.log('passed first condition')
+                state.favorites= state.favorites.filter( itm => itm.id !== action.payload.id) 
+            }
+
+            else if (state.favorites.length === 0 ) {
+                console.log('passed last condition')
+                state.favorites.push(action.payload)
+            }
+
+            else {
+                console.log('passed second condition')
+                state.favorites.push(action.payload)
+            }
+        },
+
+        populateTopRated: (state, action) => {
+            state.topRated = action.payload
+        },
+
+        populateGenres: (state, action) => {
+            state.genres = action.payload
+        },
+
+        populateUpcoming: (state, action) => {
+            state.upcoming = action.payload
         }
     }
 })
 
 export default db.reducer;
 
-export const { populateSearch, back, populateGeneral, populateFavorite } = db.actions;
+export const { populateSearch, back, populatePopular, populateFavorite, populateTopRated, populateGenres, populateUpcoming } = db.actions;

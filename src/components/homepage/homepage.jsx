@@ -1,40 +1,23 @@
-import { useEffect, useState } from 'react'
 import Hero from '../hero section/hero';
-import { useDispatch } from 'react-redux';
-import axios from 'axios'
-import { error } from '../../utils/toast'
-import { populateGeneral } from '../../redux toolkit/features/db';
+import Middle from '../middle/middle';
+import Footer from '../footer/footer';
+import { useSelector } from 'react-redux';
+import './homepage.css'
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 const Homepage = () => {
-    const dispatch = useDispatch()
-    const [looking, setLooking] = useState(false)
-
-
-    const getInfo = async (route) => {
-        try {
-            const response = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=aeeb8b9b83f045665715eae02f466f61`) 
-            
-            dispatch(populateGeneral(response.data.results))
-            setLooking(true)
-        }
-        catch (err){
-            error(err)
-            setLooking(false)
-        }
-    }
-
-    useEffect(() => {
-        getInfo()
-    }, [])
+    const { popular } = useSelector( store => store.db)
 
     return (
-        looking && 
+        popular.loading  ?
+        <div className="loading-effect">
+            <AiOutlineLoading3Quarters className="spinner"/>
+        </div>
+        :
         <section className='homepage'>
             <Hero />
-
-            <div className="middle-section">
-                {}
-            </div>
+            <Middle />
+            <Footer />
         </section>
     )
 }

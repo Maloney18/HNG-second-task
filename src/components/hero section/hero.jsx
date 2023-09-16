@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from 'react-redux';
 import menuIcon from '../../Assets/Menu.png';
 import imdbIcon from '../../Assets/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@ 1.png'
@@ -6,11 +6,14 @@ import tomatoIcon from '../../Assets/PngItem_1381056 1.png'
 import playIcon from '../../Assets/Play (1).png'
 import logoIcon from '../../Assets/tv.png'
 import './hero.css'
+import SearchBox from "../search box/searchBox";
+import { IoIosClose } from 'react-icons/io'
 
 const Hero = () => {
-    const { allData } = useSelector( store => store.db)
-    const movieInfo = allData.slice(0,5)
-    const [ current, setCurrent ] = useState({...allData[0]})
+    const { popular } = useSelector( store => store.db)
+    const movieInfo = popular.data.slice(0,5)
+    const [ isOpen, setIsOpen ] = useState(false)
+    const [ current, setCurrent ] = useState({...movieInfo[0]})
     console.log(current);
     // console.log(bgImages.length);
 
@@ -22,23 +25,35 @@ const Hero = () => {
         setCurrent({...movieInfo[no]})
     }
 
+    const toggleMenu = () => {
+        setIsOpen(!isOpen)
+    }
+
     const backImg = {
         background: `linear-gradient(to top, #00000080, #00000080), url(https://image.tmdb.org/t/p/w500${current?.poster_path}) center / cover`
     }
 
     return(
-        <section className="hero-section" style={backImg}>
+        <div className="hero-section" style={backImg}>
             <div className="up-part">
                 <div className="logo-cont"> 
-                    <img src={logoIcon} alt="movie box icon" />
+                    <div className="movie-icon">
+                        <img src={logoIcon} alt="movie box icon" />
+                    </div>
                     <p className="movie-box">MovieBox</p>
                 </div>
-
-                <div className="search-bar"></div>
+                
+                <div className={`search-cont ${isOpen ? 'open' : 'close'}`}>
+                    <SearchBox />
+                </div>
 
                 <div className="sign-in">
                     <p className="sign">Sign in</p>
                     <div className="menu-icon">
+                        {   isOpen ?
+                            <IoIosClose className="controller" onClick={() => toggleMenu()}/>:
+                            <div className="controller" onClick={() => toggleMenu()}></div>
+                        }
                         <img src={menuIcon} alt="menu icon" />
                     </div>
                 </div>
@@ -58,7 +73,7 @@ const Hero = () => {
                             </div>
 
                             <p className="rating-score">
-                                {current?.vote_average}/{current?.vote_count} 
+                                {Math.floor(current?.popularity)}/{current?.vote_count} 
                             </p>
                         </div>
 
@@ -67,7 +82,7 @@ const Hero = () => {
                                 <img src={tomatoIcon} alt="tomato icon" />
                             </div>
 
-                            <p className="percent">{Math.floor(current?.popularity)}%</p>
+                            <p className="percent">{Math.floor((current?.vote_average /10) * 100)}%</p>
                         </div>
                     </div>
 
@@ -94,7 +109,7 @@ const Hero = () => {
                 </div>
             </div>
 
-        </section>
+        </div>
     )
 }
 

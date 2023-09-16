@@ -1,7 +1,21 @@
 import './App.css';
 import Homepage from './components/homepage/homepage';
+import { useDispatch } from 'react-redux'
+import { useGenres, useFetch } from './components/hook/requests';
+import { populateGenres, populateUpcoming, populateTopRated, populatePopular  } from './redux toolkit/features/db';
+// import { useEffect } from 'react';
 
 const App = () => {
+  const dispatch = useDispatch()
+  const popular = useFetch('popular')
+  const topRated = useFetch('top_rated')
+  const upcoming = useFetch('upcoming')
+  const genres = useGenres()
+
+  dispatch(populateGenres(genres))
+  dispatch(populateUpcoming(upcoming))
+  dispatch(populateTopRated(topRated))
+  dispatch(populatePopular(popular))
 
   // https://image.tmdb.org/t/p/w500
   // movie/550?api_key=aeeb8b9b83f045665715eae02f466f61
