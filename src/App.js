@@ -1,6 +1,8 @@
 import './App.css';
 import Homepage from './components/homepage/homepage';
+import MovieDetails from './components/movie details page/movieDetails';
 import { useDispatch } from 'react-redux'
+import { Route, Routes } from 'react-router-dom';
 import { useGenres, useFetch } from './components/hook/requests';
 import { populateGenres, populateUpcoming, populateTopRated, populatePopular  } from './redux toolkit/features/db';
 // import { useEffect } from 'react';
@@ -56,7 +58,11 @@ const App = () => {
 
   return (
     <div className="App">
-      <Homepage />
+      <Routes>
+        <Route path='/' element={<Homepage />} />
+
+        <Route path='/movie-details' element={<MovieDetails />} />
+      </Routes>
     </div>
   );
 }

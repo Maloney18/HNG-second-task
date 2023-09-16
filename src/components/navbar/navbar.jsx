@@ -4,6 +4,7 @@ import logoutIcon from '../../Assets/Logout.png'
 import homeIcon from '../../Assets/Home.png'
 import calendarIcon from '../../Assets/Calendar.png'
 import tvIcon from '../../Assets/TV Show.png'
+import './navbar.css'
 
 
 const NavBar = () => {

@@ -1,4 +1,5 @@
 import './movieCard.css'
+import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import favoriteIcon from '../../Assets/Favorite.png'
 import imbdIcon from '../../Assets/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@ 1.png'
@@ -7,6 +8,7 @@ import { useState, useEffect } from 'react'
 import { populateFavorite } from '../../redux toolkit/features/db'
 
 const MovieCard = ( { movieInfo } ) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { genres } = useSelector( store => store.db)
     const { original_title, vote_average, vote_count, release_date, poster_path, popularity, genre_ids } = movieInfo.movie !== undefined ? movieInfo.movie : movieInfo
@@ -46,10 +48,8 @@ const MovieCard = ( { movieInfo } ) => {
         background: `linear-gradient(to top, #00000080, #00000080), url(https://image.tmdb.org/t/p/w500${poster_path}) center / cover`
     }
 
-
-
     return (
-        <div className='movie-card' data-testId='movie-card'>
+        <div className='movie-card' data-testId='movie-card' onClick={() => navigate('/movie-details', {state:[movieInfo.movie !== undefined ? movieInfo.movie : movieInfo]})}>
             <div className="movie-up-part" style={bgImage} data-testId='movie-poster'>
                 <div className="category" >
                     <p className="series"></p>
